@@ -1,21 +1,31 @@
-﻿<!DOCTYPE html>
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="utf-8" />
-    <title>Lab1</title>
-
-    <style>
-        a:not([href]) {
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>Lab2</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<h1>Список гиперссылок</h1>
 <body>
-    <ul>
+
+    <!-- ШАПКА -->
+    <header>
+        <div class="logo">Лого</div>
+        <h1>Название сайта</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Ссылка меню 1</a></li>
+                <li><a href="#">Ссылка меню 2</a></li>
+                <li><a href="#">Ссылка меню 3</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- СОДЕРЖИМОЕ -->
+    <main>
+        <!-- Список ссылок -->
+        <section>
+            <h2>Список гиперссылок</h2>
+                <ul>
         <li>
             <a href="http://www.kubsu.ru/ru">ссылка на сайт</a>
         </li>
@@ -89,9 +99,52 @@
         <li>
             <a href="ftp://user:12345@ftp.example.com/file.txt">Файл на FTP</a>
         </li>
-    </ul>
+            </ul>
+        </section>
 
-    <h1 id="form">Форма</h1>
+        <!-- Таблица -->
+        <section>
+            <h2>Таблица</h2>
+            <table>
+                <tr>
+                    <th>№</th>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Возраст</th>
+                </tr>
+                <tr>
+                    <td rowspan="2">1</td>
+                    <td>Иванов</td>
+                    <td>Иван</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Объединённые ячейки</td>
+                    <td>21</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Петров</td>
+                    <td>Пётр</td>
+                    <td>22</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Сидоров</td>
+                    <td>Сидор</td>
+                    <td>23</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Смирнов</td>
+                    <td>Сергей</td>
+                    <td>24</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Форма -->
+        <h2 id="form">Форма</h2>
     <label>
         ФИО<br />
         <input name="name"
@@ -143,8 +196,12 @@
 
     <input type="submit" value="Сохранить" />
 
+    </main>
 
+    <!-- ПОДВАЛ -->
+    <footer>
+        <p>&copy; Сергей Синица</p>
+    </footer>
 
 </body>
-
 </html>
