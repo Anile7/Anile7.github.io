@@ -23,179 +23,191 @@
 
     <!-- СОДЕРЖИМОЕ -->
     <main>
-        <!-- Список ссылок -->
-        <section class="links">
-            <h2>Список гиперссылок</h2>
-        <ul>
-        <li>
-            <a href="http://www.kubsu.ru/ru">ссылка на сайт</a>
-        </li>
-        <li>
-            <a href="https://www.kubsu.ru/ru">ссылка на сайт</a>
-        </li>
-        <li>
-            <a href="https://www.kubsu.ru/ru"><img src="image.jpg" width="30" height="30" alt="Цветок" /></a>
-        </li>
-        <li>
-            <a href="image.jpg">Внутренняя страница</a>
-        </li>
-        <li>
-            <a href="index.html">Главная страница</a>
-        </li>
-        <li>
-            <a href="#form">К форме</a>
-        </li>
-        <li>
-            <a href="page.html?name=Anile&age=19&lang=ru">Ссылка с параметрами</a>
-        </li>
-        <li>
-            <a href="product.html?id=123">Ссылка с параметром id</a>
-        </li>
-        <li>
-            <a href="demo.html">Открыть demo.html</a>
-        </li>
-        <li>
-            <a href="about/info.html">О нас — info.html в папке about</a>
-        </li>
-        <li>
-            <a href="../info.html">Страница уровнем выше</a>
-        </li>
-        <li>
-            <a href="../../info.html">Страница двумя уровнями выше</a>
-        </li>
-        <li>
-            <p>
-                Мы учимся в <a href="https://www.kubsu.ru/ru">КубГУ</a>, в Краснодаре
-            </p>
-        </li>
-        <li>
-            <a href="https://ru.wikipedia.org/wiki/HTML#История">История HTML</a>
-        </li>
-        <li>
-            <img src="map.png" alt="Карта" usemap="#examplemap">
-            <map name="examplemap">
-                <area shape="rect" coords="0,0,100,100" href="https://kubsu.ru" alt="Прямоугольная область">
-                <area shape="circle" coords="200,200,50" href="https://ru.wikipedia.org" alt="Круглая область">
-            </map>
-        </li>
-        <li>
-            <a href="">Пустая ссылка</a>
-        </li>
-        <li>
-            <a>Ссылка без href</a>
-        </li>
-        <li>
-            <a href="https://kubsu.ru" rel="nofollow">Запрещено для перехода поисковикам</a>
-        </li>
-        <li>
-            <!-- noindex --><a href="https://kubsu.ru">Не индексировать</a><!-- /noindex -->
-        </li>
-        <li>
-            <ol>
-                <li><a href="page1.html" title="Страница 1">Стр. 1</a></li>
-                <li><a href="page2.html" title="Страница 2">Стр. 2</a></li>
-                <li><a href="page3.html" title="Страница 3">Стр. 3</a></li>
-            </ol>
-        </li>
-        <li>
-            <a href="ftp://user:12345@ftp.example.com/file.txt">Файл на FTP</a>
-        </li>
-            </ul>
-        </section>
-
-        <!-- Таблица -->
-        <section class="table">
-            <h2>Таблица</h2>
-            <table>
-                <tr>
-                    <th>№</th>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Возраст</th>
-                </tr>
-                <tr>
-                    <td rowspan="2">1</td>
-                    <td>Иванов</td>
-                    <td>Иван</td>
-                    <td>20</td>
-                </tr>
-                <tr>
-                    <td colspan="2">Объединённые ячейки</td>
-                    <td>21</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Петров</td>
-                    <td>Пётр</td>
-                    <td>22</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Сидоров</td>
-                    <td>Сидор</td>
-                    <td>23</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Смирнов</td>
-                    <td>Сергей</td>
-                    <td>24</td>
-                </tr>
-            </table>
-        </section>
+        <div class="content">
+            <!-- Список ссылок -->
+            <section class="links">
+                <h2>Список гиперссылок</h2>
+            <ul>
+            <li>
+                <a href="http://www.kubsu.ru/ru">ссылка на сайт</a>
+            </li>
+            <li>
+                <a href="https://www.kubsu.ru/ru">ссылка на сайт</a>
+            </li>
+            <li>
+                <a href="https://www.kubsu.ru/ru"><img src="image.jpg" width="30" height="30" alt="Цветок" /></a>
+            </li>
+            <li>
+                <a href="image.jpg">Внутренняя страница</a>
+            </li>
+            <li>
+                <a href="index.html">Главная страница</a>
+            </li>
+            <li>
+                <a href="#form">К форме</a>
+            </li>
+            <li>
+                <a href="page.html?name=Anile&age=19&lang=ru">Ссылка с параметрами</a>
+            </li>
+            <li>
+                <a href="product.html?id=123">Ссылка с параметром id</a>
+            </li>
+            <li>
+                <a href="demo.html">Открыть demo.html</a>
+            </li>
+            <li>
+                <a href="about/info.html">О нас — info.html в папке about</a>
+            </li>
+            <li>
+                <a href="../info.html">Страница уровнем выше</a>
+            </li>
+            <li>
+                <a href="../../info.html">Страница двумя уровнями выше</a>
+            </li>
+            <li>
+                <p>
+                    Мы учимся в <a href="https://www.kubsu.ru/ru">КубГУ</a>, в Краснодаре
+                </p>
+            </li>
+            <li>
+                <a href="https://ru.wikipedia.org/wiki/HTML#История">История HTML</a>
+            </li>
+            <li>
+                <img src="map.png" alt="Карта" usemap="#examplemap">
+                <map name="examplemap">
+                    <area shape="rect" coords="0,0,100,100" href="https://kubsu.ru" alt="Прямоугольная область">
+                    <area shape="circle" coords="200,200,50" href="https://ru.wikipedia.org" alt="Круглая область">
+                </map>
+            </li>
+            <li>
+                <a href="">Пустая ссылка</a>
+            </li>
+            <li>
+                <a>Ссылка без href</a>
+            </li>
+            <li>
+                <a href="https://kubsu.ru" rel="nofollow">Запрещено для перехода поисковикам</a>
+            </li>
+            <li>
+                <!-- noindex --><a href="https://kubsu.ru">Не индексировать</a><!-- /noindex -->
+            </li>
+            <li>
+                <ol>
+                    <li><a href="page1.html" title="Страница 1">Стр. 1</a></li>
+                    <li><a href="page2.html" title="Страница 2">Стр. 2</a></li>
+                    <li><a href="page3.html" title="Страница 3">Стр. 3</a></li>
+                </ol>
+            </li>
+            <li>
+                <a href="ftp://user:12345@ftp.example.com/file.txt">Файл на FTP</a>
+            </li>
+                </ul>
+            </section>
+    
+            <!-- Таблица -->
+            <section class="table">
+                <h2>Таблица</h2>
+                <table>
+                    <tr>
+                        <th>№</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Возраст</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">1</td>
+                        <td>Иванов</td>
+                        <td>Иван</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Объединённые ячейки</td>
+                        <td>21</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Петров</td>
+                        <td>Пётр</td>
+                        <td>22</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Сидоров</td>
+                        <td>Сидор</td>
+                        <td>23</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Смирнов</td>
+                        <td>Сергей</td>
+                        <td>24</td>
+                    </tr>
+                </table>
+            </section>
+        </div>
 
         <!-- Форма -->
         <h2 id="form">Форма</h2>
-    <label>
-        ФИО<br />
-        <input name="name"
-               type="text"
-               placeholder="Иванов Иван Иванович" />
-    </label><br /><br />
 
-    <label>
-        Номер телефона:<br />
-        <input name="phone"
-               type="tel"
-               placeholder="‪+7 987 654-32-10‬" />
-    </label><br /><br />
-    <label>
-        Дата рождения:<br />
-        <input name="birthdate"
-               type="date" />
-    </label><br /><br />
-
-    Пол:<br />
-    <label><input type="radio" name="gender" value="female" /> Женский</label><br />
-    <label><input type="radio" name="gender" value="male" /> Мужской</label><br />
-    <label>
-        Любимый язык программирования:<br />
-        <select name="languages[]" multiple="multiple" size="10">
-            <option value="Pascal">Pascal</option>
-            <option value="C">C</option>
-            <option value="C++">C++</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="PHP">PHP</option>
-            <option value="Python">Python</option>
-            <option value="Java">Java</option>
-            <option value="Haskel">Haskel</option>
-            <option value="Clojure">Clojure</option>
-            <option value="Prolog">Prolog</option>
-            <option value="Scala">Scala</option>
-        </select>
-    </label><br /><br />
-    <label>
-        Биография:<br />
-        <textarea name="bio" placeholder="Биография"
-                  style="width:400px; height:150px;"></textarea>
-    </label><br /><br />
-
-    <label>
-        <input type="checkbox" name="agree" required />
-        С соглашением ознакомлен(а)
-    </label><br /><br />
-
-    <button type="submit">Сохранить</button>
+        <form>
+            <label>
+                ФИО<br />
+                <input name="name"
+                       type="text"
+                       placeholder="Иванов Иван Иванович" 
+                       required/>
+            </label><br /><br />
+        
+            <label>
+                Номер телефона:<br />
+                <input name="phone"
+                       type="tel"
+                       placeholder="‪+7 987 654-32-10‬" 
+                       pattern="^\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}$"
+                       required
+                    />
+        
+            </label><br /><br />
+            <label>
+                Дата рождения:<br />
+                <input name="birthdate"
+                       type="date" 
+                       required
+                       />
+            </label><br /><br />
+        
+            Пол:<br />
+            <label><input type="radio" name="gender" value="female" /> Женский</label><br />
+            <label><input type="radio" name="gender" value="male" /> Мужской</label><br />
+            <label>
+                Любимый язык программирования:<br />
+                <select name="languages[]" multiple="multiple" size="10">
+                    <option value="Pascal">Pascal</option>
+                    <option value="C">C</option>
+                    <option value="C++">C++</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="PHP">PHP</option>
+                    <option value="Python">Python</option>
+                    <option value="Java">Java</option>
+                    <option value="Haskel">Haskel</option>
+                    <option value="Clojure">Clojure</option>
+                    <option value="Prolog">Prolog</option>
+                    <option value="Scala">Scala</option>
+                </select>
+            </label><br /><br />
+            <label>
+                Биография:<br />
+                <textarea name="bio" placeholder="Биография"
+                          style="width:400px; height:150px;"></textarea>
+            </label><br /><br />
+        
+            <label>
+                <input type="checkbox" name="agree" required />
+                С соглашением ознакомлен(а)
+            </label><br /><br />
+        
+            <button type="submit">Сохранить</button>
+        </form>
 
     </main>
 
