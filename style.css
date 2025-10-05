@@ -12,6 +12,7 @@ header {
     padding: 20px;
     display: flex;
     align-items: center;
+    text-align: center;
     justify-content: space-between;
 }
 
@@ -25,17 +26,16 @@ header .logo {
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
 header nav ul {
     list-style: none;
-    margin: 0;
+    margin: 10px 0 0 0;
     padding: 0;
     display: flex;
-}
-
-header nav ul li {
-    margin: 0 10px;
+    flex-direction: column;
+    gap: 10px;
 }
 
 header nav ul li a {
@@ -48,6 +48,11 @@ main {
     max-width: 960px;
     margin: 20px auto;
     padding: 10px;
+}
+
+.content {
+     display: flex;
+     flex-direction: column;
 }
 
 /* Таблица */
@@ -67,6 +72,10 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
+.table {
+    order: -1;
+}
+
 /* Подвал */
 footer {
     background: #4A90E2;
@@ -81,8 +90,8 @@ form {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-width: 400px;
-    margin: 20px auto;
+    max-width: 100%;
+    margin: 20px 0;
 }
 
 input, select, textarea, button {
@@ -97,15 +106,34 @@ button {
     color: white;
     border: none;
     cursor: pointer;
+    align-self: flex-start;
+    width: auto;
 }
 
 button:hover {
     background: #357ABD;
 }
 
-@media (max-width: 600px) {
+@media (min-width: 768px) {
     header nav ul {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+    header .logo {
+        margin-bottom: 0;
+    }
+
+    header nav ul {
+        flex-direction: row;
+    }
+
+    main {
+        max-width: 960px;
+        margin: 20px auto;
+    }
+
+    .table {
+        order: 0;
     }
 }
