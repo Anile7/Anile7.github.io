@@ -3,157 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab4</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Lab3</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<header class="bg-primary text-white w-100 py-3">
-  <div class="container d-flex justify-content-between align-items-center flex-wrap">
-
-    <div class="d-flex align-items-center">
-      <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width:60px; height:60px; font-weight:bold;">
-        <img src="logo.png" alt="Лого" class="rounded-circle" style="width: 60px; object-fit: cover;">
-      </div>
-    </div>
-
-    <div class="text-center flex-grow-1">
-      <h1 class="h4 mb-0">Название сайта</h1>
-    </div>
-
-    <nav class="d-flex flex-column flex-md-row align-items-end align-items-md-center">
-      <a class="nav-link text-white px-2" href="#">Ссылка меню 1</a>
-      <a class="nav-link text-white px-2" href="#">Ссылка меню 2</a>
-      <a class="nav-link text-white px-2" href="#">Ссылка меню 3</a>
-    </nav>
-
-  </div>
-</header>
-
-<!-- СОДЕРЖИМОЕ -->
-<main class="container my-4">
-
-    <div class="row">
-
-        <!-- Список ссылок -->
-        <section class="col-12 order-1 order-md-0 mb-4">
-            <h2>Список гиперссылок</h2>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="http://www.kubsu.ru/ru">ссылка на сайт</a></li>
-                <li class="list-group-item"><a href="https://www.kubsu.ru/ru">ссылка на сайт</a></li>
-                <li class="list-group-item"><a href="https://www.kubsu.ru/ru"><img src="image.jpg" width="30" height="30" alt="Цветок" /></a></li>
-                <li class="list-group-item"><a href="image.jpg">Внутренняя страница</a></li>
-                <li class="list-group-item"><a href="index.html">Главная страница</a></li>
-                <li class="list-group-item"><a href="#form">К форме</a></li>
-                <li class="list-group-item"><a href="page.html?name=Anile&age=19&lang=ru">Ссылка с параметрами</a></li>
-                <li class="list-group-item"><a href="product.html?id=123">Ссылка с параметром id</a></li>
-                <li class="list-group-item"><a href="demo.html">Открыть demo.html</a></li>
-                <li class="list-group-item"><a href="about/info.html">О нас — info.html в папке about</a></li>
-                <li class="list-group-item"><a href="../info.html">Страница уровнем выше</a></li>
-                <li class="list-group-item"><a href="../../info.html">Страница двумя уровнями выше</a></li>
-                <li class="list-group-item"><p>Мы учимся в <a href="https://www.kubsu.ru/ru">КубГУ</a>, в Краснодаре</p></li>
-                <li class="list-group-item"><a href="https://ru.wikipedia.org/wiki/HTML#История">История HTML</a></li>
-                <li class="list-group-item">
-                    <img src="map.png" alt="Карта" usemap="#examplemap">
-                    <map name="examplemap">
-                        <area shape="rect" coords="0,0,100,100" href="https://kubsu.ru" alt="Прямоугольная область">
-                        <area shape="circle" coords="200,200,50" href="https://ru.wikipedia.org" alt="Круглая область">
-                    </map>
-                </li>
-                <li class="list-group-item"><a href="">Пустая ссылка</a></li>
-                <li class="list-group-item"><a>Ссылка без href</a></li>
-                <li class="list-group-item"><a href="https://kubsu.ru" rel="nofollow">Запрещено для перехода поисковикам</a></li>
-                <li class="list-group-item"><!-- noindex --><a href="https://kubsu.ru">Не индексировать</a><!-- /noindex --></li>
-                <li class="list-group-item">
-                    <ol>
-                        <li><a href="page1.html" title="Страница 1">Стр. 1</a></li>
-                        <li><a href="page2.html" title="Страница 2">Стр. 2</a></li>
-                        <li><a href="page3.html" title="Страница 3">Стр. 3</a></li>
-                    </ol>
-                </li>
-                <li class="list-group-item"><a href="ftp://user:12345@ftp.example.com/file.txt">Файл на FTP</a></li>
+    <!-- ШАПКА -->
+    <header>
+        <div class="logo">Лого</div>
+        <h1>Название сайта</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Ссылка меню 1</a></li>
+                <li><a href="#">Ссылка меню 2</a></li>
+                <li><a href="#">Ссылка меню 3</a></li>
             </ul>
-        </section>
+        </nav>
+    </header>
 
-        <!-- Таблица -->
-        <section class="col-12 order-0 order-md-1 mb-4">
-            <h2>Таблица</h2>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped text-center">
-                    <thead class="table-light">
-                        <tr>
-                            <th>№</th>
-                            <th>Фамилия</th>
-                            <th>Имя</th>
-                            <th>Возраст</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td rowspan="2">1</td>
-                            <td>Иванов</td>
-                            <td>Иван</td>
-                            <td>20</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Объединённые ячейки</td>
-                            <td>21</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Черткова</td>
-                            <td>Анастасия</td>
-                            <td>19</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Ибрагимова</td>
-                            <td>Диана</td>
-                            <td>21</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Смирнов</td>
-                            <td>Сергей</td>
-                            <td>24</td>
-                        </tr>
-                    </tbody>
+    <!-- СОДЕРЖИМОЕ -->
+    <main>
+        <div class="content">
+            <!-- Список ссылок -->
+            <section class="links">
+                <h2>Список гиперссылок</h2>
+            <ul>
+            <li>
+                <a href="http://www.kubsu.ru/ru">ссылка на сайт</a>
+            </li>
+            <li>
+                <a href="https://www.kubsu.ru/ru">ссылка на сайт</a>
+            </li>
+            <li>
+                <a href="https://www.kubsu.ru/ru"><img src="image.jpg" width="30" height="30" alt="Цветок" /></a>
+            </li>
+            <li>
+                <a href="image.jpg">Внутренняя страница</a>
+            </li>
+            <li>
+                <a href="index.html">Главная страница</a>
+            </li>
+            <li>
+                <a href="#form">К форме</a>
+            </li>
+            <li>
+                <a href="page.html?name=Anile&age=19&lang=ru">Ссылка с параметрами</a>
+            </li>
+            <li>
+                <a href="product.html?id=123">Ссылка с параметром id</a>
+            </li>
+            <li>
+                <a href="demo.html">Открыть demo.html</a>
+            </li>
+            <li>
+                <a href="about/info.html">О нас — info.html в папке about</a>
+            </li>
+            <li>
+                <a href="../info.html">Страница уровнем выше</a>
+            </li>
+            <li>
+                <a href="../../info.html">Страница двумя уровнями выше</a>
+            </li>
+            <li>
+                <p>
+                    Мы учимся в <a href="https://www.kubsu.ru/ru">КубГУ</a>, в Краснодаре
+                </p>
+            </li>
+            <li>
+                <a href="https://ru.wikipedia.org/wiki/HTML#История">История HTML</a>
+            </li>
+            <li>
+                <img src="map.png" alt="Карта" usemap="#examplemap">
+                <map name="examplemap">
+                    <area shape="rect" coords="0,0,100,100" href="https://kubsu.ru" alt="Прямоугольная область">
+                    <area shape="circle" coords="200,200,50" href="https://ru.wikipedia.org" alt="Круглая область">
+                </map>
+            </li>
+            <li>
+                <a href="">Пустая ссылка</a>
+            </li>
+            <li>
+                <a>Ссылка без href</a>
+            </li>
+            <li>
+                <a href="https://kubsu.ru" rel="nofollow">Запрещено для перехода поисковикам</a>
+            </li>
+            <li>
+                <!-- noindex --><a href="https://kubsu.ru">Не индексировать</a><!-- /noindex -->
+            </li>
+            <li>
+                <ol>
+                    <li><a href="page1.html" title="Страница 1">Стр. 1</a></li>
+                    <li><a href="page2.html" title="Страница 2">Стр. 2</a></li>
+                    <li><a href="page3.html" title="Страница 3">Стр. 3</a></li>
+                </ol>
+            </li>
+            <li>
+                <a href="ftp://user:12345@ftp.example.com/file.txt">Файл на FTP</a>
+            </li>
+                </ul>
+            </section>
+    
+            <!-- Таблица -->
+            <section class="table">
+                <h2>Таблица</h2>
+                <table>
+                    <tr>
+                        <th>№</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Возраст</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">1</td>
+                        <td>Иванов</td>
+                        <td>Иван</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Объединённые ячейки</td>
+                        <td>21</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Петров</td>
+                        <td>Пётр</td>
+                        <td>22</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Сидоров</td>
+                        <td>Сидор</td>
+                        <td>23</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Смирнов</td>
+                        <td>Сергей</td>
+                        <td>24</td>
+                    </tr>
                 </table>
-            </div>
-        </section>
-    </div>
+            </section>
+        </div>
 
-    <!-- Форма -->
-    <section class="mb-5">
+        <!-- Форма -->
         <h2 id="form">Форма</h2>
-        <form class="row g-3">
-            <div class="col-12 col-md-6">
-                <label class="form-label">ФИО</label>
-                <input type="text" name="name" class="form-control" placeholder="Иванов Иван Иванович" required>
-            </div>
-            <div class="col-12 col-md-6">
-                <label class="form-label">Номер телефона</label>
-                <input type="tel" name="phone" class="form-control" placeholder="+7 987 654-32-10" 
-                       pattern="^\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}$" required>
-            </div>
-            <div class="col-12 col-md-6">
-                <label class="form-label">Дата рождения</label>
-                <input type="date" name="birthdate" class="form-control" required>
-            </div>
-            <div class="col-12 col-md-6">
-                <label class="form-label">Пол</label><br>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" value="female">
-                    <label class="form-check-label">Женский</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" value="male">
-                    <label class="form-check-label">Мужской</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <label class="form-label">Любимый язык программирования</label>
-                <select name="languages[]" class="form-select" multiple size="5">
+
+        <form>
+            <label>
+                ФИО<br />
+                <input name="name"
+                       type="text"
+                       placeholder="Иванов Иван Иванович" 
+                       required/>
+            </label><br /><br />
+        
+            <label>
+                Номер телефона:<br />
+                <input name="phone"
+                       type="tel"
+                       placeholder="‪+7 987 654-32-10‬" 
+                       pattern="^\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}$"
+                       required
+                    />
+        
+            </label><br /><br />
+            <label>
+                Дата рождения:<br />
+                <input name="birthdate"
+                       type="date" 
+                       required
+                       />
+            </label><br /><br />
+        
+            Пол:<br />
+            <label><input type="radio" name="gender" value="female" /> Женский</label><br />
+            <label><input type="radio" name="gender" value="male" /> Мужской</label><br />
+            <label>
+                Любимый язык программирования:<br />
+                <select name="languages[]" multiple="multiple" size="10">
                     <option value="Pascal">Pascal</option>
                     <option value="C">C</option>
                     <option value="C++">C++</option>
@@ -166,29 +194,27 @@
                     <option value="Prolog">Prolog</option>
                     <option value="Scala">Scala</option>
                 </select>
-            </div>
-            <div class="col-12">
-                <label class="form-label">Биография</label>
-                <textarea name="bio" class="form-control" placeholder="Биография" rows="5"></textarea>
-            </div>
-            <div class="col-12 form-check">
-                <label class="form-check-label">
-                    <input type="checkbox" name="agree" class="form-check-input" required>
-                    С соглашением ознакомлен(а)
-                </label>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Сохранить</button>
-            </div>
+            </label><br /><br />
+            <label>
+                Биография:<br />
+                <textarea name="bio" placeholder="Биография"
+                          style="width:400px; height:150px;"></textarea>
+            </label><br /><br />
+        
+            <label>
+                <input type="checkbox" name="agree" required />
+                С соглашением ознакомлен(а)
+            </label><br /><br />
+        
+            <button type="submit">Сохранить</button>
         </form>
-    </section>
 
-</main>
+    </main>
 
-<!-- ПОДВАЛ -->
-<footer class="bg-primary text-white text-center py-3">
-    <p class="mb-0">&copy; Сергей Синица</p>
-</footer>
+    <!-- ПОДВАЛ -->
+    <footer>
+        <p>&copy; Сергей Синица</p>
+    </footer>
 
 </body>
 </html>
