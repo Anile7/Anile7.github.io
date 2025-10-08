@@ -4,7 +4,11 @@ body {
     margin: 0;
     padding: 0;
 }
-
+.pic {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
 /* Шапка */
 header {
     background: #4A90E2;
