@@ -1,0 +1,143 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.pic {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+/* Шапка */
+header {
+    background: #4A90E2;
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+}
+
+header .logo {
+    width: 60px;
+    height: 60px;
+    background: white;
+    color: #4A90E2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+header nav ul {
+    list-style: none;
+    margin: 10px 0 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Контент */
+main {
+    max-width: 960px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+.content {
+     display: flex;
+     flex-direction: column;
+}
+
+/* Таблица */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    border: 1px solid #333;
+    padding: 8px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table {
+    order: -1;
+}
+
+/* Подвал */
+footer {
+    background: #4A90E2;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+
+
+/* Форма */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 100%;
+    margin: 20px 0;
+}
+
+input, select, textarea, button {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+button {
+    background: #4A90E2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+    width: auto;
+}
+
+button:hover {
+    background: #357ABD;
+}
+
+@media (min-width: 768px) {
+    header nav ul {
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+    header .logo {
+        margin-bottom: 0;
+    }
+
+    header nav ul {
+        flex-direction: row;
+    }
+
+    main {
+        max-width: 960px;
+        margin: 20px auto;
+    }
+
+    .table {
+        order: 0;
+    }
+}
