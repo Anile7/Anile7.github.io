@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор стоимости заказа</title>
+    <link rel="stylesheet" href="project2.css">
+</head>
+<body>
+    <div class="calculator">
+        <h1>Калькулятор стоимости заказа</h1>
+        
+        <div class="form-group">
+            <label for="product">Выберите товар:</label>
+            <select id="product">
+                <option value="1500">Смартфон - 1 500 руб.</option>
+                <option value="2500">Ноутбук - 2 500 руб.</option>
+                <option value="800">Наушники - 800 руб.</option>
+                <option value="3500">Планшет - 3 500 руб.</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Количество товара:</label>
+            <input type="number" id="quantity" min="1" value="1">
+            <div id="quantityError" class="error">Введите корректное количество (не менее 1)</div>
+        </div>
+
+        <button id="calculateBtn">Рассчитать стоимость</button>
+
+        <div id="result"></div>
+    </div>
+
+    <!-- Подключаем скрипт в конце body -->
+    <script src="project2.js"></script>
+</body>
+</html>
