@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор стоимости заказа</title>
+    <link rel="stylesheet" href="project2.css">
+</head>
+<body>
+    <div class="calculator">
+        <h1>Калькулятор стоимости услуги</h1>
+        
+        <div class="form-group">
+            <label for="quantity">Количество:</label>
+            <input type="number" id="quantity" min="1" value="1">
+        </div>
+        
+        <div class="form-group">
+            <label>Тип услуги:</label>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="type1" name="serviceType" value="basic" checked>
+                    <label for="type1">Базовая услуга</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="type2" name="serviceType" value="premium">
+                    <label for="type2">Премиум услуга</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="type3" name="serviceType" value="custom">
+                    <label for="type3">Кастомная услуга</label>
+                </div>
+            </div>
+        </div>
+        
+        <div id="optionsGroup" class="form-group hidden">
+            <label for="options">Дополнительные опции:</label>
+            <select id="options">
+                <option value="standard">Стандартная опция</option>
+                <option value="advanced">Продвинутая опция</option>
+                <option value="professional">Профессиональная опция</option>
+            </select>
+        </div>
+        
+        <div id="propertyGroup" class="form-group hidden">
+            <div class="checkbox-group">
+                <input type="checkbox" id="property">
+                <label for="property">Включить расширенное свойство</label>
+            </div>
+        </div>
+        
+        <div class="result">
+            <div>Итоговая стоимость:</div>
+            <div class="price" id="totalPrice">100 руб.</div>
+        </div>
+    </div>
+
+    <!-- Подключаем скрипт в конце body -->
+    <script src="project2.js"></script>
+</body>
+</html>
