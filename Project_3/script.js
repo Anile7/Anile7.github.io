@@ -1,78 +1,65 @@
 const slider = document.querySelector('.slider');
-
-const dots = document.querySelectorAll('.dot');
-
+const dotsContainer = document.querySelector('.pager');
 const leftArrow = document.querySelector('.arrow.left');
-
 const rightArrow = document.querySelector('.arrow.right');
 
-
-
 let currentIndex = 0;
-
-
-
-// Определяем, сколько изображений показывать (3 на ПК, 1 на телефоне)
+const totalImages = 8;
 
 function getVisibleCount() {
-
   return window.innerWidth <= 768 ? 1 : 3;
-
 }
 
+// Количество страниц
+function getTotalPages() {
+  const visibleCount = getVisibleCount();
+  return Math.ceil(totalImages / visibleCount);
+}
 
+// Создание кружков
+function createDots() {
+  const totalPages = getTotalPages();
+  dotsContainer.innerHTML = '';
+  for (let i = 0; i < totalPages; i++) {
+    const dot = document.createElement('span');
+    dot.classList.add('dot');
+    if (i === currentIndex) dot.classList.add('active');
+    dotsContainer.appendChild(dot);
+  }
+}
 
 function updateSlider() {
-
   const visibleCount = getVisibleCount();
-
-  const shift = -(currentIndex * (100 / visibleCount));
-
+  const shift = -(currentIndex * 100);
   slider.style.transform = `translateX(${shift}%)`;
 
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
 
-
-  dots.forEach(dot => dot.classList.remove('active'));
-
-  dots[currentIndex] && dots[currentIndex].classList.add('active');
-
+  leftArrow.disabled = currentIndex === 0;
+  rightArrow.disabled = currentIndex === getTotalPages() - 1;
 }
 
-
-
-// Обработчики стрелок
-
 rightArrow.addEventListener('click', () => {
-
-  const visibleCount = getVisibleCount();
-
-  const maxIndex = Math.ceil(8 / visibleCount) - 1;
-
-  currentIndex = (currentIndex + 1 > maxIndex) ? 0 : currentIndex + 1;
-
-  updateSlider();
-
+  if (currentIndex < getTotalPages() - 1) {
+    currentIndex++;
+    updateSlider();
+  }
 });
-
-
 
 leftArrow.addEventListener('click', () => {
-
-  const visibleCount = getVisibleCount();
-
-  const maxIndex = Math.ceil(8 / visibleCount) - 1;
-
-  currentIndex = (currentIndex - 1 < 0) ? maxIndex : currentIndex - 1;
-
-  updateSlider();
-
+  if (currentIndex > 0) {
+    currentIndex--;
+    updateSlider();
+  }
 });
 
+window.addEventListener('resize', () => {
+  const totalPages = getTotalPages();
+  if (currentIndex >= totalPages) currentIndex = totalPages - 1;
+  createDots();
+  updateSlider();
+});
 
-
-window.addEventListener('resize', updateSlider);
-
-
-
+createDots();
 updateSlider();
-
