@@ -1,160 +1,82 @@
 body {
-
   background-color: #f3f3f3;
-
   font-family: Arial, sans-serif;
-
   display: flex;
-
   justify-content: center;
-
   align-items: center;
-
   height: 100vh;
-
   margin: 0;
-
 }
-
 
 
 .gallery-container {
-
   position: relative;
-
   width: 80%;
-
   max-width: 800px;
-
   overflow: hidden;
-
 }
-
 
 
 .gallery {
-
   overflow: hidden;
-
   width: 100%;
-
 }
-
 
 
 .slider {
-
   display: flex;
-
   transition: transform 0.5s ease;
-
 }
-
 
 
 .slider img {
-
   width: calc(100% / 3);
-
   height: auto;
-
 }
-
-
-
-/* Стрелки */
 
 .arrow {
-
   position: absolute;
-
   top: 45%;
-
   background-color: rgba(0, 0, 0, 0.5);
-
   border: none;
-
   color: white;
-
   font-size: 24px;
-
   padding: 8px 12px;
-
   cursor: pointer;
-
   z-index: 10;
-
 }
-
 
 
 .arrow.left {
-
   left: 5px;
-
 }
-
-
 
 .arrow.right {
-
   right: 5px;
-
 }
-
-
-
-/* Пейджер */
 
 .pager {
-
   text-align: center;
-
   margin-top: 10px;
-
 }
-
 
 
 .dot {
-
   height: 10px;
-
   width: 10px;
-
   margin: 0 4px;
-
   background-color: #bbb;
-
   border-radius: 50%;
-
   display: inline-block;
-
   transition: background-color 0.3s;
-
 }
-
-
 
 .dot.active {
-
   background-color: #333;
-
 }
-
-
-
-/* 📱 Адаптивность */
 
 @media (max-width: 768px) {
-
   .slider img {
-
     width: 100%;
-
   }
-
 }
-
-
-
