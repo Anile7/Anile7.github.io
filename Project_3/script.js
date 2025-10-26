@@ -10,13 +10,11 @@ function getVisibleCount() {
   return window.innerWidth <= 768 ? 1 : 3;
 }
 
-// Количество страниц
 function getTotalPages() {
   const visibleCount = getVisibleCount();
   return Math.ceil(totalImages / visibleCount);
 }
 
-// Создание кружков
 function createDots() {
   const totalPages = getTotalPages();
   dotsContainer.innerHTML = '';
@@ -63,3 +61,4 @@ window.addEventListener('resize', () => {
 
 createDots();
 updateSlider();
+
