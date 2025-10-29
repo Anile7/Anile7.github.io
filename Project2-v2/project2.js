@@ -56,6 +56,13 @@ function calculateTotalPrice() {
     
     let basePrice = basePrices[selectedType];
     let total = basePrice * quantity;
+
+    if (isNAN(quantity) || quantity<1) {
+        errorDiv.style.display='block';
+        quantityİnput.style.borderColor='#dc3545';
+        resultDiv.style.display='none';
+        return;
+    }
     
     // Добавляем стоимость опции для премиум услуги
     if (selectedType === 'premium') {
@@ -91,4 +98,5 @@ propertyCheckbox.addEventListener('change', updatePriceDisplay);
 
 // Инициализация при загрузке страницы
 updateFormVisibility();
+
 updatePriceDisplay();
