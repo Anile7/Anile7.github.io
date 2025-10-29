@@ -74,4 +74,12 @@ input[type="number"], select {
     width: 100%;
     display: flex;
     justify-content: flex-start;
+
+}
+
+.error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top:5px;
+    display:none;
 }
