@@ -25,55 +25,6 @@ const propertyGroup = document.getElementById('propertyGroup');
 const propertyCheckbox = document.getElementById('property');
 const totalPriceElement = document.getElementById('totalPrice');
 
-// Функция для проверки валидности количества
-function validateQuantity() {
-    const quantity = quantityInput.value.trim();
-    const quantityNum = parseInt(quantity);
-    
-    // Очищаем предыдущие ошибки
-    quantityError.style.display = 'none';
-    quantityInput.classList.remove('error');
-    
-    // Проверка на пустое значение
-    if (quantity === '') {
-        showQuantityError('Пожалуйста, введите количество');
-        return false;
-    }
-    
-    // Проверка на число
-    if (isNaN(quantity) || quantity === '') {
-        showQuantityError('Количество должно быть числом');
-        return false;
-    }
-    
-    // Проверка на целое число
-    if (!Number.isInteger(quantityNum)) {
-        showQuantityError('Количество должно быть целым числом');
-        return false;
-    }
-    
-    // Проверка на отрицательные значения и ноль
-    if (quantityNum <= 0) {
-        showQuantityError('Количество должно быть больше нуля');
-        return false;
-    }
-    
-    // Проверка на слишком большое значение
-    if (quantityNum > 1000) {
-        showQuantityError('Количество не может превышать 1000');
-        return false;
-    }
-    
-    return true;
-}
-
-// Функция для отображения ошибки количества
-function showQuantityError(message) {
-    quantityError.textContent = message;
-    quantityError.style.display = 'block';
-    quantityInput.classList.add('error');
-}
-
 // Функция для обновления видимости дополнительных элементов
 function updateFormVisibility() {
     const selectedType = document.querySelector('input[name="serviceType"]:checked').value;
@@ -101,14 +52,22 @@ function updateFormVisibility() {
 
 // Функция для расчета общей стоимости
 function calculateTotalPrice() {
-    // Проверяем валидность перед расчетом
-    if (!validateQuantity()) {
-        return 0;
+    const quantityValue = quantityInput.value.trim();
+    const quantity = parseInt(quantityValue, 10);
+
+    // Проверка на ошибки ввода
+    if (isNaN(quantity) || quantity <= 0) {
+        quantityError.style.display = 'block';
+        quantityInput.style.borderColor = '#dc3545';
+        totalPriceElement.textContent = '--';
+        return null;
     }
-    
-    const quantity = parseInt(quantityInput.value);
+
+    // Всё ок — скрываем ошибку
+    quantityError.style.display = 'none';
+    quantityInput.style.borderColor = '';
+
     const selectedType = document.querySelector('input[name="serviceType"]:checked').value;
-    
     let basePrice = basePrices[selectedType];
     let total = basePrice * quantity;
     
@@ -117,21 +76,19 @@ function calculateTotalPrice() {
         const selectedOption = optionsSelect.value;
         total *= optionMultipliers[selectedOption];
     }
-    
+
     // Добавляем стоимость свойства для кастомной услуги
     if (selectedType === 'custom' && propertyCheckbox.checked) {
         total += propertyPrice * quantity;
     }
-    
-    return Math.round(total); // Округляем до целого числа
+
+    return total;
 }
 
 // Функция для обновления отображаемой цены
 function updatePriceDisplay() {
     const total = calculateTotalPrice();
-    if (total === 0) {
-        totalPriceElement.textContent = '—';
-    } else {
+    if (total !== null) {
         totalPriceElement.textContent = `${total} руб.`;
     }
 }
@@ -144,16 +101,7 @@ serviceTypeRadios.forEach(radio => {
     });
 });
 
-quantityInput.addEventListener('input', function() {
-    validateQuantity();
-    updatePriceDisplay();
-});
-
-quantityInput.addEventListener('blur', function() {
-    validateQuantity();
-    updatePriceDisplay();
-});
-
+quantityInput.addEventListener('input', updatePriceDisplay);
 optionsSelect.addEventListener('change', updatePriceDisplay);
 propertyCheckbox.addEventListener('change', updatePriceDisplay);
 
