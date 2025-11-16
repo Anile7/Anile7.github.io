@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма обратной связи</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Добро пожаловать на наш сайт</h1>
+        <p>Для связи с нами используйте форму обратной связи</p>
+        <button class="open-form-btn" id="openFormBtn">Связаться с нами</button>
+    </div>
+
+    <!-- Попап с формой -->
+    <div class="overlay" id="overlay">
+        <div class="popup">
+            <button class="close-btn" id="closeBtn">&times;</button>
+            <h2 class="form-title">Форма обратной связи</h2>
+            <form class="feedback-form" id="feedbackForm">
+                <div class="form-group">
+                    <label for="fullName">ФИО *</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="organization">Организация</label>
+                    <input type="text" id="organization" name="organization">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Сообщение *</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="privacyPolicy" name="privacyPolicy" required>
+                    <label for="privacyPolicy">Согласен с политикой обработки персональных данных *</label>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">Отправить</button>
+                
+                <div class="message success" id="successMessage">
+                    Сообщение успешно отправлено!
+                </div>
+                
+                <div class="message error" id="errorMessage">
+                    Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте позже.
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
