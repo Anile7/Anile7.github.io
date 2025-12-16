@@ -175,22 +175,21 @@ textarea {
 
 @media (max-width: 768px) {
     .container h1 {
-        font-size: 2.5rem !important; /* ~40px */
+        font-size: 2.5rem !important; 
         margin-bottom: 15px;
     }
     
     .container p {
-        font-size: 1.1rem !important; /* ~18px */
+        font-size: 1.1rem !important; 
         margin-bottom: 25px;
         padding: 0 10px;
     }
     
     .open-form-btn {
-        font-size: 1.2rem !important; /* ~19px */
+        font-size: 1.2rem !important;
         padding: 15px 30px;
     }
     
-    /* Остальное уже есть */
     .popup {
         width: 95%;
         padding: 20px;
@@ -201,3 +200,4 @@ textarea {
         padding: 10px;
     }
 }
+
