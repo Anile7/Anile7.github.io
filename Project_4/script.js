@@ -11,7 +11,7 @@ const errorMessage = document.getElementById('errorMessage');
 const STORAGE_KEY = 'feedbackFormData';
 
 // URL для отправки формы (замените на ваш URL с formcarry.com или slapform.com)
-const FORM_SUBMIT_URL = 'https://formcarry.com/s/YOUR_FORM_ID';
+const FORM_SUBMIT_URL = 'https://formcarry.com/s/_aMhclWCpwJ';
 
 // Открытие формы
 openFormBtn.addEventListener('click', () => {
@@ -145,4 +145,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.hash === '#feedback-form') {
         openFormBtn.click();
     }
+
 });
