@@ -13,7 +13,6 @@
         <button class="open-form-btn" id="openFormBtn">Связаться с нами</button>
     </div>
 
-    <!-- Попап с формой -->
     <div class="overlay" id="overlay">
         <div class="popup">
             <button class="close-btn" id="closeBtn">&times;</button>
@@ -21,7 +20,10 @@
             <form class="feedback-form" id="feedbackForm">
                 <div class="form-group">
                     <label for="fullName">ФИО *</label>
-                    <input type="text" id="fullName" name="fullName" required>
+                    <input type="text" id="fullName" name="fullName" 
+                    pattern="[A-Za-zА-Яа-яЁё\s\-]+" 
+                    title="Введите ФИО буквами"
+                    required>
                 </div>
                 
                 <div class="form-group">
@@ -30,8 +32,9 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="phone">Телефон</label>
-                    <input type="tel" id="phone" name="phone">
+                    <label for="phone">Телефон *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+7 987 654-32-10" 
+                       pattern="^\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}$" required>
                 </div>
                 
                 <div class="form-group">
