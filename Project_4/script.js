@@ -93,7 +93,7 @@ function showErrorMessage() {
     errorMessage.style.display = 'block';
 }
 
-// Отправка формы
+// ОТПРАВКА ФОРМЫ - ИСПРАВЛЕННЫЙ БЛОК
 feedbackForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -102,13 +102,24 @@ feedbackForm.addEventListener('submit', async (e) => {
     submitBtn.textContent = 'Отправка...';
     
     try {
-        // Сбор данных формы
-        const formData = new FormData(feedbackForm);
+        // Сбор данных формы в обычный объект (не FormData!)
+        const formData = {
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value || '',
+            organization: document.getElementById('organization').value || '',
+            message: document.getElementById('message').value,
+            privacyPolicy: document.getElementById('privacyPolicy').checked
+        };
         
-        // Отправка данных с помощью fetch
+        // Отправка данных с помощью fetch в формате JSON
         const response = await fetch(FORM_SUBMIT_URL, {
             method: 'POST',
-            body: formData
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
         });
         
         if (response.ok) {
@@ -120,7 +131,10 @@ feedbackForm.addEventListener('submit', async (e) => {
                 closeForm();
             }, 2000);
         } else {
-            throw new Error('Ошибка сервера');
+            // Пробуем получить текст ошибки от сервера
+            const errorText = await response.text();
+            console.error('Ошибка сервера:', errorText);
+            throw new Error(`Ошибка отправки: ${response.status}`);
         }
     } catch (error) {
         console.error('Ошибка отправки формы:', error);
@@ -145,5 +159,4 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.hash === '#feedback-form') {
         openFormBtn.click();
     }
-
 });
