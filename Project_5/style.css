@@ -1,3 +1,8 @@
+Теперь вот как выглядит:
+
+
+Вот мой css:
+
 * {
   font-family: "Montserrat", "Roboto", sans-serif !important;
 }
@@ -91,8 +96,11 @@ header {
 }
 
 header nav.liens-section {
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   padding: 30px 50px;
   display: flex;
   justify-content: space-between;
@@ -166,7 +174,7 @@ header nav.liens-section::before {
 .header-container {
   position: relative;
   z-index: 1;
-  padding-top: 100px;
+  padding-top: 190px;
   background: rgba(0, 0, 0, 0.8) url("./druplicon.svg") no-repeat left top;
   background-size: 802px 604px;
 }
@@ -257,27 +265,6 @@ header nav.liens-section::before {
     opacity: 1;
     transform: translateX(0);
   }
-}
-
-.whole-team {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-}
-
-.whole-team-button {
-  border-style: solid;
-  background-color: white;
-  border-color: rgb(228, 228, 228);
-  padding: 10px 40px;
-}
-
-.whole-team-button:hover {
-  background-color: rgb(244, 244, 244);
-  border-color: white;
-  transition: background-color 0.2s;
-  transition: border-color 0.2s;
 }
 
 
@@ -426,7 +413,7 @@ header nav.liens-section::before {
   padding: 20px;
   min-width: 300px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 2000;
+  z-index: 1000;
 }
 
 .dropdown-menu.admin-menu.show {
@@ -458,6 +445,7 @@ header nav.liens-section::before {
 
 .nav-item.dropdown {
   position: relative;
+  align-self: flex-start;
 }
 
 .dropdown-toggle::after {
@@ -594,7 +582,7 @@ header nav.liens-section::before {
     background: rgba(221, 0, 0, 0.9);
     box-shadow: none;
     display: none;
-    z-index: ;
+    z-index: 1000;
     border-radius: 0;
     border: none;
   }
@@ -1056,11 +1044,9 @@ textarea.form-control {
   color: white;
   text-decoration: underline;
 }
-.permission {
-  color: red;
-}
+
 .btn-submit {
-  background-color: #ff3c3c;
+  background-color: #ff0000;
   color: white;
   border: none;
   padding: 15px 40px;
@@ -1102,7 +1088,6 @@ textarea.form-control {
   display: inline-block;
   width: 32px;
   height: 32px;
-  padding: 3px;
 
   border-radius: 20%;
   background-color: #ff0000;
@@ -2920,5 +2905,4 @@ svg {
     padding-left: 20px;
     text-align: center;
   }
-
 }
