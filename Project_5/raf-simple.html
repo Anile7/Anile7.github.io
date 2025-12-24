@@ -1,0 +1,30 @@
+<div id="mybox" style="position:absolute; width: 100px;">Animation!</div>
+
+<script>
+// Переменная таймера начала анимации.
+var start = null;
+
+// Находим элемент для анимации.
+var element = document.getElementById("mybox");
+
+// Функция кадра горизонтальной анимации.
+function step(timestamp) {
+  // Вычисляем новую позицию.
+  if (!start) start = timestamp;
+  var progress = timestamp - start;
+  // Сдвигаем элемент.
+  element.style.left = Math.min(progress / 10, 200) + 'px';
+  if (progress < 2000) {
+    // Пока не прошло 2 секунды вызываем следующий кадр.
+    window.requestAnimationFrame(step);
+  }
+}
+
+// Ждем загрузки DOM. Элемент <body> будет загружен автоматически.
+window.addEventListener('DOMContentLoaded', function() {
+  
+  // Запускаем анимацию.
+  window.requestAnimationFrame(step);
+  
+});
+</script>

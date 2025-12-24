@@ -1,0 +1,34 @@
+<style>
+
+/* Свойства закрытого меню */
+.button {
+  width: 100px;
+  height: 25px;
+  background-color: green;
+  color: white;
+  /* CSS-трансформация, все свойства будут плавно меняться одну секунду */
+  transition: all 1s ease;
+}
+
+/* Свойства раскрытого меню */
+.opened {
+  background-color: red;
+  color: black;
+  height: 400px;
+}
+</style>
+
+<script>
+// Ждем загрузки DOM. Элемент <body> будет загружен автоматически.
+window.addEventListener('DOMContentLoaded', function() {
+  var button = document.getElementById('button');
+  button.addEventListener('click', function(event) {
+    // Переключаем класс .opened
+    event.target.classList.toggle('opened');
+  });
+
+});
+</script>
+
+<div id="button" class="button">Click Me!</div>
+
