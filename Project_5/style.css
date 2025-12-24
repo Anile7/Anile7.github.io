@@ -1618,7 +1618,7 @@ table tr:nth-child(even) {
 
 .review-card.active {
   display: block;
-  width: 800px;
+  width: 1100px;
   padding-left: 50px;
   margin-left: 310px;
 }
@@ -2921,3 +2921,4 @@ svg {
     text-align: center;
   }
 }
+
