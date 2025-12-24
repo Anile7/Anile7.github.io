@@ -426,7 +426,7 @@ header nav.liens-section::before {
   padding: 20px;
   min-width: 300px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .dropdown-menu.admin-menu.show {
@@ -2920,4 +2920,5 @@ svg {
     padding-left: 20px;
     text-align: center;
   }
+
 }
