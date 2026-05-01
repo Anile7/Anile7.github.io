@@ -212,8 +212,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $pdo->commit();
                 saveDefaultValuesToCookie($input);
-                
-                $msg = "Данные успешно сохранены!<br>Ваш логин: <strong>$login</strong><br>Ваш пароль: <strong>$password</strong>";
+
+                $msg = "Данные успешно сохранены!\nВаш логин: $login\nВаш пароль: $password";
                 header("Location: ?success=" . urlencode($msg));
                 exit;
             }
