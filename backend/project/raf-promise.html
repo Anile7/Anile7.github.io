@@ -1,0 +1,78 @@
+<script>
+
+// Функция кадра горизонтальной анимации.
+function step(start, element) {
+  return function(timestamp) {
+    // Вычисляем новую позицию.
+    if (!start) start = timestamp;
+    var progress = timestamp - start;
+    // Сдвигаем элемент.
+    element.style.left = Math.min(progress / 10, 200) + 'px';
+    if (progress < 2000) {
+      // Пока не прошло 2 секунды вызываем следующий кадр.
+      return new Promise(function() {window.requestAnimationFrame(step(start, element))});
+    }
+  }
+}
+
+// Функция кадра вертикальной анимации.
+function step2(start, element) {
+  return function(timestamp) {
+    // Вычисляем новую позицию.
+    if (!start) start = timestamp;
+    var progress = timestamp - start;
+    // Сдвигаем элемент.
+    element.style.top = Math.min(10 + (progress) / 10, 200) + 'px';
+    // Пока не прошло 2 секунды вызываем следующий кадр.
+    if (progress < 2000) {
+      window.requestAnimationFrame(step2(start, element));
+    }
+  }
+}
+
+// Функция кадра анимации размера.
+function step3(start, element) {
+  return function(timestamp) {
+    // Вычисляем новую позицию.
+    if (!start) start = timestamp;
+    var progress = timestamp - start;
+    // Сдвигаем элемент.
+    element.style.width = Math.min(progress / 10 + 100, 500) + 'px';
+    element.style.height = element.style.width;
+    // Пока не прошло 2 секунды вызываем следующий кадр.
+    if (progress < 2000) {
+      window.requestAnimationFrame(step3(start, element));
+    }
+  }
+}
+
+// Ждем загрузки DOM. Элемент <body> будет загружен автоматически.
+window.addEventListener('DOMContentLoaded', function() {
+  // Переменная таймера начала анимации.
+  var start = null;
+
+  // Создаем элемент для анимации.
+  var element = document.createElement("div");
+  element.style.position = 'absolute';
+  element.style.width = '100px';
+  element.style.height = '100px';
+  element.style.backgroundColor = 'green';
+
+  // Добавляем элемент в <body>
+  document.body.appendChild(element);
+  
+  // Запускаем горизонтальную анимацию.
+  // window.requestAnimationFrame() будет вызывать step для получения 60 FPS
+  // при условии, что step вызывает window.requestAnimationFrame()
+  window.requestAnimationFrame(step(start, element));
+  
+  // Через секунду запускаем вертикальную анимацию.
+  setTimeout(function() {
+    window.requestAnimationFrame(step2(start, element));
+    setTimeout(function() {
+      window.requestAnimationFrame(step3(start, element));
+    }, 1000);
+  }, 1000);
+});
+
+</script>
