@@ -83,9 +83,10 @@ class FeedbackForm {
     try {
       const formData = new FormData(this.feedbackForm);
 
-      const response = await fetch("https://formcarry.com/s/_aMhclWCpwJ", {
-        method: "POST",
-        body: formData,
+      const response = await fetch("api.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonData)
       });
 
       const result = await response.json();
