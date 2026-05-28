@@ -124,76 +124,64 @@ class FeedbackForm {
   }
 
   async handleSubmit(e) {
-      e.preventDefault();
-  
-      // Проверяем валидность формы
-      if (!this.feedbackForm.checkValidity()) {
-          this.showMessage("Пожалуйста, заполните все обязательные поля правильно", "error");
-          return;
-      }
-  
-      const originalText = this.submitBtn.textContent;
-      this.submitBtn.disabled = true;
-      this.submitBtn.textContent = "Отправка...";
-  
-      // Собираем данные из формы
-      const formElement = this.feedbackForm;
-      const formData = new FormData(formElement);
-      
-      // Преобразуем в JSON
-      const formObject = {};
-      formData.forEach((value, key) => {
-          formObject[key] = value;
-      });
-  
-      // Подготавливаем данные для API
-      const apiData = {
-          full_name: formObject["field-name-1"] || "",
-          phone: formObject.phone || "",
-          email: formObject["field-email"] || "",
-          birth_date: "2000-01-01",
-          gender: "female",
-          languages: ["JavaScript"],
-          biography: formObject["field-name-2"] || "",
-          contract: formObject.agree ? 1 : 0
-      };
-  
-      console.log("Отправка на API:", apiData);
-  
-      try {
-          const response = await fetch("api.php", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json"
-              },
-              body: JSON.stringify(apiData)
-          });
-  
-          const result = await response.json();
-          console.log("Ответ API:", result);
-  
-          if (result.success) {
-              let msg = result.message;
-              if (result.login) {
-                  msg = `${result.message}\n\nЛогин: ${result.login}\nПароль: ${result.password}`;
-              }
-              this.showMessage(msg, "success");
-              this.feedbackForm.reset();
-              this.clearFormData();
-          } else if (result.errors) {
-              const errorMsg = Object.values(result.errors).join(". ");
-              this.showMessage(errorMsg, "error");
-          } else {
-              this.showMessage(result.error || "Неизвестная ошибка", "error");
-          }
-      } catch (error) {
-          console.error("Ошибка:", error);
-          this.showMessage("Ошибка соединения с сервером", "error");
-      } finally {
-          this.submitBtn.disabled = false;
-          this.submitBtn.textContent = originalText;
-      }
-  }
+    e.preventDefault();
+    
+    if (!this.feedbackForm.checkValidity()) {
+        this.showMessage("Пожалуйста, заполните все обязательные поля правильно", "error");
+        return;
+    }
+    
+    const originalText = this.submitBtn.textContent;
+    this.submitBtn.disabled = true;
+    this.submitBtn.textContent = "Отправка...";
+    
+    const formObject = {
+        full_name: document.getElementById("field-name-1").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("field-email").value,
+        birth_date: "2000-01-01",
+        gender: "female",
+        languages: ["JavaScript"],
+        biography: document.getElementById("field-name-2").value,
+        contract: document.getElementById("agree").checked ? 1 : 0
+    };
+    
+    try {
+        // ✅ ВАЖНО: добавить credentials: 'include' для передачи cookies
+        const response = await fetch("api.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: 'include',  // ← ЭТО КЛЮЧЕВОЕ ДОБАВЛЕНИЕ
+            body: JSON.stringify(formObject)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            let msg = result.message;
+            if (result.login) {
+                msg = `${result.message}\n\nЛогин: ${result.login}\nПароль: ${result.password}`;
+                // Сохраняем данные для авторизации, чтобы следующие запросы были уже авторизованы
+                localStorage.setItem('user_login', result.login);
+                localStorage.setItem('user_password', result.password);
+            }
+            this.showMessage(msg, "success");
+            this.feedbackForm.reset();
+            this.clearFormData();
+        } else if (result.errors) {
+            const errorMsg = Object.values(result.errors).join(". ");
+            this.showMessage(errorMsg, "error");
+        } else {
+            this.showMessage(result.error || "Неизвестная ошибка", "error");
+        }
+    } catch (error) {
+        console.error("Ошибка:", error);
+        this.showMessage("Ошибка соединения с сервером", "error");
+    } finally {
+        this.submitBtn.disabled = false;
+        this.submitBtn.textContent = originalText;
+    }
+}
 }
 
 document.addEventListener("DOMContentLoaded", () => {
