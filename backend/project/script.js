@@ -148,7 +148,7 @@ class FeedbackForm {
     
     try {
         // ✅ ВАЖНО: добавить credentials: 'include' для передачи cookies
-        const response = await fetch("api.php", {
+        const response = await fetch("project/api.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: 'include',  // ← ЭТО КЛЮЧЕВОЕ ДОБАВЛЕНИЕ
