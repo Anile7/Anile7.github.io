@@ -1,3 +1,61 @@
+class AuthManager {
+    constructor() {
+        this.isAuthorized = false;
+        this.checkAuth();
+    }
+
+    async checkAuth() {
+        try {
+            const response = await fetch('api.php?action=check', {
+                credentials: 'include'
+            });
+            const data = await response.json();
+            this.isAuthorized = data.authorized;
+            this.updateUI();
+        } catch(e) {
+            console.log('Не авторизован');
+        }
+    }
+
+    async login(login, password) {
+        const response = await fetch('api.php?action=login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ login, password })
+        });
+        const data = await response.json();
+        if (data.success) {
+            this.isAuthorized = true;
+            this.updateUI();
+        }
+        return data;
+    }
+
+    async logout() {
+        await fetch('api.php?action=logout', { credentials: 'include' });
+        this.isAuthorized = false;
+        this.updateUI();
+    }
+
+    updateUI() {
+        // Показываем/скрываем кнопки авторизации в интерфейсе
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userStatus = document.getElementById('userStatus');
+        
+        if (this.isAuthorized) {
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (logoutBtn) logoutBtn.style.display = 'inline-block';
+            if (userStatus) userStatus.textContent = '✓ Авторизован';
+        } else {
+            if (loginBtn) loginBtn.style.display = 'inline-block';
+            if (logoutBtn) logoutBtn.style.display = 'none';
+            if (userStatus) userStatus.textContent = '';
+        }
+    }
+}
+
 class FeedbackForm {
   constructor() {
     this.feedbackForm = document.getElementById("feedbackForm");
