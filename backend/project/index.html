@@ -1117,7 +1117,11 @@
         </div>
     </div>
 </section> 
-
+<div id="authWidget" style="display: flex; gap: 10px; align-items: center;">
+    <span id="userStatus"></span>
+    <button id="loginBtn" style="display: none;" onclick="showLoginModal()">Вход</button>
+    <button id="logoutBtn" style="display: none;" onclick="authManager.logout()">Выход</button>
+</div>
         <section id="form-section">
             <div class="container">
                 <div class="row">
