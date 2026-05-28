@@ -171,6 +171,48 @@ function generatePassword() {
 session_start();
 $is_authorized = !empty($_SESSION['user_id']);
 $user_submission_id = null;
+session_start();
+
+// --- ЛОГИН (установка сессии) ---
+if (isset($_GET['action']) && $_GET['action'] === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $login = $input['login'] ?? '';
+    $password = $input['password'] ?? '';
+    
+    try {
+        $pdo = new PDO("mysql:host=localhost;dbname=u82574;charset=utf8mb4", "u82574", "3923359");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        $stmt = $pdo->prepare("SELECT id, password_hash FROM users WHERE login = ?");
+        $stmt->execute([$login]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user && password_verify($password, $user['password_hash'])) {
+            $_SESSION['user_id'] = $user['id'];
+            echo json_encode(['success' => true, 'message' => 'Авторизация успешна']);
+        } else {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'error' => 'Неверный логин или пароль']);
+        }
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Ошибка сервера']);
+    }
+    exit();
+}
+
+// --- ПРОВЕРКА АВТОРИЗАЦИИ ---
+if (isset($_GET['action']) && $_GET['action'] === 'check') {
+    echo json_encode(['authorized' => !empty($_SESSION['user_id'])]);
+    exit();
+}
+
+// --- ЛОГАУТ ---
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+    session_destroy();
+    echo json_encode(['success' => true]);
+    exit();
+}
 
 if ($is_authorized) {
     try {
