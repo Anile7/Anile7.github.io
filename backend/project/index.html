@@ -1337,44 +1337,6 @@ $(document).ready(function(){
     });
 	
 </script>
-<script>const form = document.getElementById('form');
-const submitBtn = form.querySelector('button[type="submit"]');
-
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    formData.append("access_key", "2f150c45-44a5-4083-affa-81d1de06b6ee");
-
-    const originalText = submitBtn.textContent;
-
-    submitBtn.textContent = "Sending...";
-    submitBtn.disabled = true;
-
-    try {
-        const response = await fetch("api.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(jsonData)
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("Success! Your message has been sent.");
-            form.reset();
-        } else {
-            alert("Error: " + data.message);
-        }
-
-    } catch (error) {
-        alert("Something went wrong. Please try again.");
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }
-});</script>
-
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
