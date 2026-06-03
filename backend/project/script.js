@@ -1,314 +1,217 @@
-class AuthManager {
-    constructor() {
-        this.isAuthorized = false;
-        this.checkAuth();
-    }
-
-    async checkAuth() {
-        try {
-            const response = await fetch('api.php?action=check', {
-                credentials: 'include'
-            });
-            const data = await response.json();
-            this.isAuthorized = data.authorized;
-            this.updateUI();
-        } catch(e) {
-            console.log('Не авторизован');
-        }
-    }
-
-    async login(login, password) {
-        const response = await fetch('api.php?action=login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ login, password })
-        });
-        const data = await response.json();
-        if (data.success) {
-            this.isAuthorized = true;
-            this.updateUI();
-        }
-        return data;
-    }
-
-    async logout() {
-        await fetch('api.php?action=logout', { credentials: 'include' });
-        this.isAuthorized = false;
-        this.updateUI();
-    }
-
-    updateUI() {
-        // Показываем/скрываем кнопки авторизации в интерфейсе
-        const loginBtn = document.getElementById('loginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const userStatus = document.getElementById('userStatus');
-        
-        if (this.isAuthorized) {
-            if (loginBtn) loginBtn.style.display = 'none';
-            if (logoutBtn) logoutBtn.style.display = 'inline-block';
-            if (userStatus) userStatus.textContent = '✓ Авторизован';
-        } else {
-            if (loginBtn) loginBtn.style.display = 'inline-block';
-            if (logoutBtn) logoutBtn.style.display = 'none';
-            if (userStatus) userStatus.textContent = '';
-        }
-    }
-}
-
 class FeedbackForm {
-  constructor() {
-    this.feedbackForm = document.getElementById("feedbackForm");
-    this.submitBtn = document.getElementById("submitBtn");
-    this.STORAGE_KEY = "feedbackFormData";
-    this.init();
-  }
-
-  init() {
-    this.restoreFormData();
-    this.feedbackForm.addEventListener("submit", (e) => this.handleSubmit(e));
-    this.feedbackForm.addEventListener("input", () => this.saveFormData());
-  }
-
-  saveFormData() {
-    const formData = {
-      name: document.getElementById("field-name-1").value,
-      phone: document.getElementById("phone").value,
-      email: document.getElementById("field-email").value,
-      comment: document.getElementById("field-name-2").value,
-      agree: document.getElementById("agree").checked,
-    };
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(formData));
-  }
-
-  restoreFormData() {
-    const savedData = localStorage.getItem(this.STORAGE_KEY);
-    if (savedData) {
-      try {
-        const data = JSON.parse(savedData);
-        document.getElementById("field-name-1").value = data.name || "";
-        document.getElementById("phone").value = data.phone || "";
-        document.getElementById("field-email").value = data.email || "";
-        document.getElementById("field-name-2").value = data.comment || "";
-        document.getElementById("agree").checked = data.agree || false;
-      } catch (error) {
-        console.error("Ошибка восстановления данных:", error);
-        this.clearFormData();
-      }
-    }
-  }
-
-  clearFormData() {
-    localStorage.removeItem(this.STORAGE_KEY);
-  }
-
-  showMessage(message, type = "success") {
-    const existingMessage = document.querySelector(".form-message");
-    if (existingMessage) {
-      existingMessage.remove();
+    constructor() {
+        this.feedbackForm = document.getElementById("feedbackForm");
+        this.submitBtn = document.getElementById("submitBtn");
+        this.STORAGE_KEY = "feedbackFormData";
+        this.init();
     }
 
-    const messageDiv = document.createElement("div");
-    messageDiv.className = `form-message alert alert-${
-      type === "success" ? "success" : "danger"
-    } mt-3`;
-    messageDiv.textContent = message;
-
-    this.feedbackForm.appendChild(messageDiv);
-
-    setTimeout(() => {
-      if (messageDiv.parentNode) {
-        messageDiv.remove();
-      }
-    }, 5000);
-  }
-
-  async handleSubmit(e) {
-    e.preventDefault();
-    
-    if (!this.feedbackForm.checkValidity()) {
-        this.showMessage("Пожалуйста, заполните все обязательные поля правильно", "error");
-        return;
-    }
-    
-    const originalText = this.submitBtn.textContent;
-    this.submitBtn.disabled = true;
-    this.submitBtn.textContent = "Отправка...";
-    
-    const formObject = {
-        full_name: document.getElementById("field-name-1").value,
-        phone: document.getElementById("phone").value,
-        email: document.getElementById("field-email").value,
-        birth_date: "2000-01-01",
-        gender: "female",
-        languages: ["JavaScript"],
-        biography: document.getElementById("field-name-2").value,
-        contract: document.getElementById("agree").checked ? 1 : 0
-    };
-    
-    try {
-        // ✅ ВАЖНО: добавить credentials: 'include' для передачи cookies
-        const response = await fetch("project/api.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: 'include',  // ← ЭТО КЛЮЧЕВОЕ ДОБАВЛЕНИЕ
-            body: JSON.stringify(formObject)
-        });
+    init() {
+        this.restoreFormData();
+        this.checkAuthStatus();
+        this.feedbackForm.addEventListener("submit", (e) => this.handleSubmit(e));
+        this.feedbackForm.addEventListener("input", () => this.saveFormData());
         
-        const result = await response.json();
-        
-        if (result.success) {
-            let msg = result.message;
-            if (result.login) {
-                msg = `${result.message}\n\nЛогин: ${result.login}\nПароль: ${result.password}`;
-                // Сохраняем данные для авторизации, чтобы следующие запросы были уже авторизованы
-                localStorage.setItem('user_login', result.login);
-                localStorage.setItem('user_password', result.password);
-            }
-            this.showMessage(msg, "success");
-            this.feedbackForm.reset();
-            this.clearFormData();
-        } else if (result.errors) {
-            const errorMsg = Object.values(result.errors).join(". ");
-            this.showMessage(errorMsg, "error");
-        } else {
-            this.showMessage(result.error || "Неизвестная ошибка", "error");
+        // Кнопки авторизации
+        const loginBtn = document.getElementById("login-btn");
+        if (loginBtn) {
+            loginBtn.addEventListener("click", () => this.login());
         }
-    } catch (error) {
-        console.error("Ошибка:", error);
-        this.showMessage("Ошибка соединения с сервером", "error");
-    } finally {
-        this.submitBtn.disabled = false;
-        this.submitBtn.textContent = originalText;
+        
+        const logoutBtn = document.getElementById("logout-btn");
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", () => this.logout());
+        }
     }
-}
+    
+    async checkAuthStatus() {
+        try {
+            const response = await fetch("auth.php?action=check");
+            const result = await response.json();
+            if (result.logged_in) {
+                this.updateAuthUI(true, result.login);
+            }
+        } catch (e) {
+            // ignore
+        }
+    }
+    
+    updateAuthUI(loggedIn, login = '') {
+        const authBlock = document.getElementById("auth-block");
+        if (!authBlock) return;
+        
+        if (loggedIn) {
+            authBlock.innerHTML = `
+                <div id="auth-status" style="background: #d4edda; padding: 15px; border-radius: 5px;">
+                    ✅ Вы вошли как <strong>${login}</strong>
+                    <button id="logout-btn" class="btn btn-sm btn-secondary">Выйти</button>
+                </div>
+            `;
+            document.getElementById("logout-btn")?.addEventListener("click", () => this.logout());
+        } else {
+            authBlock.innerHTML = `
+                <div id="login-form" style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                    <h3>Вход для редактирования данных</h3>
+                    <input type="text" id="login-username" placeholder="Логин" class="form-control mb-2">
+                    <input type="password" id="login-password" placeholder="Пароль" class="form-control mb-2">
+                    <button id="login-btn" class="btn btn-primary">Войти</button>
+                    <small class="text-muted">Нет аккаунта? Отправьте форму, и вы получите логин и пароль.</small>
+                </div>
+            `;
+            document.getElementById("login-btn")?.addEventListener("click", () => this.login());
+        }
+    }
+    
+    async login() {
+        const login = document.getElementById("login-username")?.value;
+        const password = document.getElementById("login-password")?.value;
+        
+        if (!login || !password) {
+            this.showMessage("Введите логин и пароль", "error");
+            return;
+        }
+        
+        try {
+            const response = await fetch("auth.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ login, password })
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+                this.showMessage(result.message, "success");
+                location.reload(); // обновляем страницу для обновления UI
+            } else {
+                this.showMessage(result.error, "error");
+            }
+        } catch (error) {
+            this.showMessage("Ошибка соединения", "error");
+        }
+    }
+    
+    async logout() {
+        try {
+            await fetch("auth.php?action=logout");
+            location.reload();
+        } catch (error) {
+            this.showMessage("Ошибка при выходе", "error");
+        }
+    }
+
+    saveFormData() {
+        const formData = {
+            name: document.getElementById("field-name-1")?.value || "",
+            phone: document.getElementById("phone")?.value || "",
+            email: document.getElementById("field-email")?.value || "",
+            comment: document.getElementById("field-name-2")?.value || "",
+            agree: document.getElementById("agree")?.checked || false,
+        };
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(formData));
+    }
+
+    restoreFormData() {
+        const savedData = localStorage.getItem(this.STORAGE_KEY);
+        if (savedData) {
+            try {
+                const data = JSON.parse(savedData);
+                if (document.getElementById("field-name-1")) document.getElementById("field-name-1").value = data.name || "";
+                if (document.getElementById("phone")) document.getElementById("phone").value = data.phone || "";
+                if (document.getElementById("field-email")) document.getElementById("field-email").value = data.email || "";
+                if (document.getElementById("field-name-2")) document.getElementById("field-name-2").value = data.comment || "";
+                if (document.getElementById("agree")) document.getElementById("agree").checked = data.agree || false;
+            } catch (error) {
+                console.error("Ошибка восстановления данных:", error);
+                this.clearFormData();
+            }
+        }
+    }
+
+    clearFormData() {
+        localStorage.removeItem(this.STORAGE_KEY);
+    }
+
+    showMessage(message, type = "success") {
+        const existingMessage = document.querySelector(".form-message");
+        if (existingMessage) existingMessage.remove();
+
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `form-message alert alert-${type === "success" ? "success" : "danger"} mt-3`;
+        messageDiv.style.whiteSpace = "pre-line";
+        messageDiv.textContent = message;
+
+        this.feedbackForm.appendChild(messageDiv);
+        setTimeout(() => messageDiv.remove(), 8000);
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault();
+
+        if (!this.feedbackForm.checkValidity()) {
+            this.showMessage("Пожалуйста, заполните все обязательные поля правильно", "error");
+            return;
+        }
+
+        const originalText = this.submitBtn.textContent;
+        this.submitBtn.disabled = true;
+        this.submitBtn.textContent = "Отправка...";
+
+        const formData = new FormData(this.feedbackForm);
+        const formObject = {};
+        formData.forEach((value, key) => {
+            formObject[key] = value;
+        });
+
+        // Подготовка данных для API
+        const apiData = {
+            full_name: formObject["field-name-1"] || "",
+            phone: formObject.phone || "",
+            email: formObject["field-email"] || "",
+            birth_date: "2000-01-01",
+            gender: "female",
+            languages: ["JavaScript"],
+            biography: formObject["field-name-2"] || "",
+            contract: formObject.agree ? 1 : 0
+        };
+
+        try {
+            const response = await fetch("api.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(apiData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                let message = result.message;
+                if (result.login) {
+                    message = `${result.message}\n\n🔐 Ваш логин: ${result.login}\n🔑 Ваш пароль: ${result.password}\n\nСохраните эти данные для входа и редактирования!`;
+                }
+                this.showMessage(message, "success");
+                this.feedbackForm.reset();
+                this.clearFormData();
+                
+                // Если пользователь только что создал аккаунт, обновляем блок авторизации
+                if (result.login) {
+                    setTimeout(() => location.reload(), 3000);
+                }
+            } else if (result.errors) {
+                const errorMsg = Object.values(result.errors).join(". ");
+                this.showMessage(errorMsg, "error");
+            } else {
+                this.showMessage(result.error || "Неизвестная ошибка", "error");
+            }
+        } catch (error) {
+            console.error("Ошибка:", error);
+            this.showMessage("Ошибка соединения с сервером", "error");
+        } finally {
+            this.submitBtn.disabled = false;
+            this.submitBtn.textContent = originalText;
+        }
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  new FeedbackForm();
+    new FeedbackForm();
 });
-class ReviewsCarousel {
-  constructor() {
-    this.currentIndex = 0;
-    this.reviews = document.querySelectorAll(".review-item");
-    this.dots = document.querySelectorAll(".dot");
-    this.autoSlideInterval = null;
-    this.autoSlideDelay = 5000;
-
-    this.init();
-  }
-
-  init() {
-    this.showReview(this.currentIndex);
-
-    this.addEventListeners();
-
-    this.startAutoSlide();
-  }
-
-  showReview(index) {
-    this.reviews.forEach((review) => {
-      review.classList.remove("active");
-      review.style.opacity = "0";
-      review.style.transform = "translateX(30px)";
-    });
-
-    this.dots.forEach((dot) => dot.classList.remove("active"));
-
-    this.reviews[index].classList.add("active");
-    this.dots[index].classList.add("active");
-
-    setTimeout(() => {
-      this.reviews[index].style.opacity = "1";
-      this.reviews[index].style.transform = "translateX(0)";
-    }, 50);
-
-    this.currentIndex = index;
-  }
-
-  nextReview() {
-    let nextIndex = this.currentIndex + 1;
-    if (nextIndex >= this.reviews.length) {
-      nextIndex = 0;
-    }
-    this.showReview(nextIndex);
-  }
-
-  prevReview() {
-    let prevIndex = this.currentIndex - 1;
-    if (prevIndex < 0) {
-      prevIndex = this.reviews.length - 1;
-    }
-    this.showReview(prevIndex);
-  }
-
-  goToReview(index) {
-    if (index >= 0 && index < this.reviews.length) {
-      this.showReview(index);
-    }
-  }
-
-  startAutoSlide() {
-    this.stopAutoSlide();
-    this.autoSlideInterval = setInterval(() => {
-      this.nextReview();
-    }, this.autoSlideDelay);
-  }
-
-  stopAutoSlide() {
-    if (this.autoSlideInterval) {
-      clearInterval(this.autoSlideInterval);
-      this.autoSlideInterval = null;
-    }
-  }
-
-  addEventListeners() {
-    const carousel = document.getElementById("reviewsCarousel");
-    if (carousel) {
-      carousel.addEventListener("mouseenter", () => this.stopAutoSlide());
-      carousel.addEventListener("mouseleave", () => this.startAutoSlide());
-      carousel.addEventListener("touchstart", () => this.stopAutoSlide());
-    }
-
-    document.querySelectorAll(".nav-btn, .dot").forEach((element) => {
-      element.addEventListener("click", () => {
-        this.stopAutoSlide();
-        setTimeout(() => this.startAutoSlide(), 10000);
-      });
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") {
-        this.prevReview();
-        this.stopAutoSlide();
-      } else if (e.key === "ArrowRight") {
-        this.nextReview();
-        this.stopAutoSlide();
-      }
-    });
-  }
-}
-
-let reviewsCarousel;
-
-function initReviewsCarousel() {
-  reviewsCarousel = new ReviewsCarousel();
-}
-
-function nextReview() {
-  if (reviewsCarousel) reviewsCarousel.nextReview();
-}
-
-function prevReview() {
-  if (reviewsCarousel) reviewsCarousel.prevReview();
-}
-
-function goToReview(index) {
-  if (reviewsCarousel) reviewsCarousel.goToReview(index);
-}
-
-document.addEventListener("DOMContentLoaded", initReviewsCarousel);
-
-window.nextReview = nextReview;
-window.prevReview = prevReview;
-window.goToReview = goToReview;
