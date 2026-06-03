@@ -43,7 +43,7 @@ class FeedbackForm {
         if (loggedIn) {
             authBlock.innerHTML = `
                 <div id="auth-status" style="background: #d4edda; padding: 15px; border-radius: 5px;">
-                    ✅ Вы вошли как <strong>${login}</strong>
+                     Вы вошли как <strong>${login}</strong>
                     <button id="logout-btn" class="btn btn-sm btn-secondary">Выйти</button>
                 </div>
             `;
@@ -186,7 +186,7 @@ class FeedbackForm {
             if (result.success) {
                 let message = result.message;
                 if (result.login) {
-                    message = `${result.message}\n\n🔐 Ваш логин: ${result.login}\n🔑 Ваш пароль: ${result.password}\n\nСохраните эти данные для входа и редактирования!`;
+                    message = `${result.message}\n\n Ваш логин: ${result.login}\n Ваш пароль: ${result.password}\n\nСохраните эти данные для входа и редактирования!`;
                 }
                 this.showMessage(message, "success");
                 this.feedbackForm.reset();
