@@ -194,7 +194,7 @@ class FeedbackForm {
                 
                 // Если пользователь только что создал аккаунт, обновляем блок авторизации
                 if (result.login) {
-                    setTimeout(() => location.reload(), 3000);
+                    setTimeout(() => location.reload(), 20000);
                 }
             } else if (result.errors) {
                 const errorMsg = Object.values(result.errors).join(". ");
