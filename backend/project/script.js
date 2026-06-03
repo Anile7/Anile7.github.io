@@ -17,6 +17,7 @@ class FeedbackForm {
         try {
             const response = await fetch("auth.php?action=check");
             const result = await response.json();
+            console.log("checkAuthStatus response:", result);
             if (result.logged_in) {
                 this.updateAuthUI(true, result.login);
             } else {
@@ -31,8 +32,9 @@ class FeedbackForm {
         const authBlock = document.getElementById("auth-block");
         if (!authBlock) return;
 
+        console.log("updateAuthUI called with loggedIn:", loggedIn, "login:", login);
+
         if (loggedIn) {
-            // Показываем статус "Вы вошли как"
             authBlock.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
@@ -47,7 +49,6 @@ class FeedbackForm {
             `;
             document.getElementById("logout-btn")?.addEventListener("click", () => this.logout());
         } else {
-            // Показываем форму входа
             authBlock.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <h3 style="color: #fff; font-size: 18px; margin: 0 0 16px 0;">Вход для редактирования данных</h3>
@@ -87,14 +88,17 @@ class FeedbackForm {
                 body: JSON.stringify({ login, password })
             });
             const result = await response.json();
+            console.log("login response:", result);
 
             if (result.success) {
                 this.showMessage(result.message, "success");
-                this.updateAuthUI(true, login);
+                // Обновляем блок авторизации
+                await this.checkAuthStatus();
             } else {
                 this.showMessage(result.error, "error");
             }
         } catch (error) {
+            console.error("Login error:", error);
             this.showMessage("Ошибка соединения", "error");
         }
     }
@@ -102,7 +106,7 @@ class FeedbackForm {
     async logout() {
         try {
             await fetch("auth.php?action=logout");
-            this.updateAuthUI(false);
+            await this.checkAuthStatus();
             this.showMessage("Вы вышли из системы", "success");
             this.feedbackForm.reset();
         } catch (error) {
@@ -192,6 +196,7 @@ class FeedbackForm {
             });
 
             const result = await response.json();
+            console.log("handleSubmit response:", result);
 
             if (result.success) {
                 let message = result.message;
@@ -201,7 +206,7 @@ class FeedbackForm {
                     this.feedbackForm.reset();
                     this.clearFormData();
                     // Обновляем блок авторизации
-                    this.checkAuthStatus();
+                    await this.checkAuthStatus();
                 } else {
                     this.showMessage(message, "success");
                     this.feedbackForm.reset();
