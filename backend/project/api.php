@@ -1,5 +1,5 @@
 <?php
-// api.php – веб-сервис
+// api.php – веб-сервис для приёма данных формы
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-// Чтение входных данных
+// Чтение входных данных (JSON или XML)
 $input = [];
 $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
 
@@ -28,6 +28,15 @@ if (strpos($contentType, 'application/json') !== false) {
         echo json_encode(['error' => 'Неверный формат JSON.']);
         exit();
     }
+} elseif (strpos($contentType, 'application/xml') !== false || strpos($contentType, 'text/xml') !== false) {
+    $raw = file_get_contents('php://input');
+    $xml = simplexml_load_string($raw);
+    if ($xml === false) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Неверный формат XML.']);
+        exit();
+    }
+    $input = json_decode(json_encode($xml), true);
 } else {
     $input = $_POST;
 }
@@ -38,7 +47,7 @@ $db_name = 'u82574';
 $db_user = 'u82574';
 $db_pass = '3923359';
 
-// Функции (оставляем те же, что были)
+// Функция для валидации
 function validateFormData($data) {
     $errors = [];
     if (!preg_match('/^[a-zA-Zа-яА-ЯёЁ\s\-]{1,150}$/u', $data['full_name'] ?? '')) {
@@ -78,9 +87,85 @@ function validateFormData($data) {
     return $errors;
 }
 
-// ... остальные функции (insertSubmission, saveLanguages, updateSubmission, createUser, generateLogin, generatePassword)
-// вставьте их здесь из вашего api.php (они уже есть)
-// Я не буду дублировать для краткости, но они должны быть
+// Функции для работы с БД
+function insertSubmission($data, $pdo) {
+    $sql = "INSERT INTO submissions (full_name, phone, email, birth_date, gender, biography, contract_agreed)
+            VALUES (:full_name, :phone, :email, :birth_date, :gender, :biography, :contract)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':full_name' => $data['full_name'],
+        ':phone' => $data['phone'],
+        ':email' => $data['email'],
+        ':birth_date' => $data['birth_date'],
+        ':gender' => $data['gender'],
+        ':biography' => $data['biography'],
+        ':contract' => $data['contract']
+    ]);
+    return $pdo->lastInsertId();
+}
+
+function saveLanguages($submission_id, $languages, $pdo) {
+    $stmtLangId = $pdo->prepare("SELECT id FROM programming_languages WHERE name = ?");
+    $stmtLink = $pdo->prepare("INSERT INTO submission_languages (submission_id, language_id) VALUES (?, ?)");
+    foreach ($languages as $langName) {
+        $stmtLangId->execute([$langName]);
+        $langId = $stmtLangId->fetchColumn();
+        if ($langId) {
+            $stmtLink->execute([$submission_id, $langId]);
+        }
+    }
+}
+
+function createUser($submission_id, $login, $password_hash, $pdo) {
+    $sql = "INSERT INTO users (login, password_hash, submission_id) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$login, $password_hash, $submission_id]);
+}
+
+function updateSubmission($submission_id, $data, $pdo) {
+    $sql = "UPDATE submissions SET 
+            full_name = :full_name,
+            phone = :phone,
+            email = :email,
+            birth_date = :birth_date,
+            gender = :gender,
+            biography = :biography,
+            contract_agreed = :contract
+            WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':full_name' => $data['full_name'],
+        ':phone' => $data['phone'],
+        ':email' => $data['email'],
+        ':birth_date' => $data['birth_date'],
+        ':gender' => $data['gender'],
+        ':biography' => $data['biography'],
+        ':contract' => $data['contract'],
+        ':id' => $submission_id
+    ]);
+    
+    $stmtDel = $pdo->prepare("DELETE FROM submission_languages WHERE submission_id = ?");
+    $stmtDel->execute([$submission_id]);
+    
+    $stmtLangId = $pdo->prepare("SELECT id FROM programming_languages WHERE name = ?");
+    $stmtLink = $pdo->prepare("INSERT INTO submission_languages (submission_id, language_id) VALUES (?, ?)");
+    foreach ($data['languages'] as $langName) {
+        $stmtLangId->execute([$langName]);
+        $langId = $stmtLangId->fetchColumn();
+        if ($langId) {
+            $stmtLink->execute([$submission_id, $langId]);
+        }
+    }
+}
+
+function generateLogin() {
+    return 'user_' . uniqid();
+}
+
+function generatePassword() {
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return substr(str_shuffle($chars), 0, 8);
+}
 
 // --- ОСНОВНАЯ ЛОГИКА ---
 session_start();
@@ -97,7 +182,7 @@ if ($is_authorized) {
         $user_submission_id = $stmt->fetchColumn();
     } catch (Exception $e) {
         http_response_code(500);
-        echo json_encode(['error' => 'Ошибка сервера']);
+        echo json_encode(['error' => 'Ошибка сервера. Попробуйте позже.']);
         exit();
     }
 }
@@ -129,7 +214,7 @@ try {
     $pdo->beginTransaction();
 
     if ($is_authorized && $user_submission_id) {
-        // АВТОРИЗОВАННЫЙ ПОЛЬЗОВАТЕЛЬ: обновляем данные
+        // Обновление существующей записи
         updateSubmission($user_submission_id, $data, $pdo);
         $pdo->commit();
         echo json_encode([
@@ -138,7 +223,7 @@ try {
             'profile_url' => "http://u82574.kubsu-dev.ru/task5/?edit=" . $user_submission_id
         ]);
     } else {
-        // НЕАВТОРИЗОВАННЫЙ ПОЛЬЗОВАТЕЛЬ: создаём нового пользователя
+        // Новая запись
         $submission_id = insertSubmission($data, $pdo);
         saveLanguages($submission_id, $data['languages'], $pdo);
         
