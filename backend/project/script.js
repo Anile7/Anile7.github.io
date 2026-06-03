@@ -141,7 +141,7 @@ class FeedbackForm {
         messageDiv.textContent = message;
 
         this.feedbackForm.appendChild(messageDiv);
-        setTimeout(() => messageDiv.remove(), 8000);
+        setTimeout(() => messageDiv.remove(), 30000);
     }
 
     async handleSubmit(e) {
