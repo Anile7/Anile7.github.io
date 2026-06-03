@@ -38,7 +38,6 @@ if (strpos($contentType, 'application/json') !== false) {
     }
     $input = json_decode(json_encode($xml), true);
 } else {
-    // Если пришли обычные POST-данные (form-data) – тоже поддержим
     $input = $_POST;
 }
 
@@ -48,7 +47,7 @@ $db_name = 'u82574';
 $db_user = 'u82574';
 $db_pass = '3923359';
 
-// Функция для валидации (как в задании 5)
+// Функция для валидации
 function validateFormData($data) {
     $errors = [];
     if (!preg_match('/^[a-zA-Zа-яА-ЯёЁ\s\-]{1,150}$/u', $data['full_name'] ?? '')) {
@@ -88,7 +87,7 @@ function validateFormData($data) {
     return $errors;
 }
 
-// Функции для работы с БД (как в задании 5)
+// Функции для работы с БД
 function insertSubmission($data, $pdo) {
     $sql = "INSERT INTO submissions (full_name, phone, email, birth_date, gender, biography, contract_agreed)
             VALUES (:full_name, :phone, :email, :birth_date, :gender, :biography, :contract)";
@@ -162,57 +161,16 @@ function updateSubmission($submission_id, $data, $pdo) {
 function generateLogin() {
     return 'user_' . uniqid();
 }
+
 function generatePassword() {
     $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     return substr(str_shuffle($chars), 0, 8);
 }
 
-// --- ОСНОВНАЯ ЛОГИКА API ---
+// --- ОСНОВНАЯ ЛОГИКА ---
 session_start();
 $is_authorized = !empty($_SESSION['user_id']);
 $user_submission_id = null;
-session_start();
-
-// --- ЛОГИН (установка сессии) ---
-if (isset($_GET['action']) && $_GET['action'] === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $input = json_decode(file_get_contents('php://input'), true);
-    $login = $input['login'] ?? '';
-    $password = $input['password'] ?? '';
-    
-    try {
-        $pdo = new PDO("mysql:host=localhost;dbname=u82574;charset=utf8mb4", "u82574", "3923359");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-        $stmt = $pdo->prepare("SELECT id, password_hash FROM users WHERE login = ?");
-        $stmt->execute([$login]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if ($user && password_verify($password, $user['password_hash'])) {
-            $_SESSION['user_id'] = $user['id'];
-            echo json_encode(['success' => true, 'message' => 'Авторизация успешна']);
-        } else {
-            http_response_code(401);
-            echo json_encode(['success' => false, 'error' => 'Неверный логин или пароль']);
-        }
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Ошибка сервера']);
-    }
-    exit();
-}
-
-// --- ПРОВЕРКА АВТОРИЗАЦИИ ---
-if (isset($_GET['action']) && $_GET['action'] === 'check') {
-    echo json_encode(['authorized' => !empty($_SESSION['user_id'])]);
-    exit();
-}
-
-// --- ЛОГАУТ ---
-if (isset($_GET['action']) && $_GET['action'] === 'logout') {
-    session_destroy();
-    echo json_encode(['success' => true]);
-    exit();
-}
 
 if ($is_authorized) {
     try {
@@ -229,7 +187,7 @@ if ($is_authorized) {
     }
 }
 
-// Валидация входных данных
+// Валидация
 $errors = validateFormData($input);
 if (!empty($errors)) {
     http_response_code(400);
@@ -237,7 +195,7 @@ if (!empty($errors)) {
     exit();
 }
 
-// Подготовка данных для сохранения
+// Подготовка данных
 $data = [
     'full_name' => trim($input['full_name']),
     'phone' => trim($input['phone']),
